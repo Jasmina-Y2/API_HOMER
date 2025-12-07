@@ -1,15 +1,10 @@
+
 {
   "version": 2,
   "builds": [
-    {
-      "src": "api/traducir.js",
-      "use": "@vercel/node"
-    }
+    { "src": "api/*.js", "use": "@vercel/node" }
   ],
   "routes": [
-    {
-      "src": "/traducir",
-      "dest": "/api/traducir.js"
-    }
+    { "src": "/api/(.*)", "dest": "/api/$1.js" }
   ]
 }

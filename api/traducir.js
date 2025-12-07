@@ -1,11 +1,9 @@
 import { pipeline } from "@xenova/transformers";
+
 const API_KEY = "HomeroApp06-12-2025";
 
 let esToEn;
 let enToEs;
-
-const t = await pipeline("translation", "Xenova/opus-mt-es-en");
-console.log(await t("hola"));
 
 async function traducir(texto, from, to) {
   if (from === "es" && to === "en") {
@@ -14,8 +12,7 @@ async function traducir(texto, from, to) {
         quantized: true,
       });
     }
-    const out = await esToEn(texto);
-    return out[0].translation_text;
+    return (await esToEn(texto))[0].translation_text;
   }
 
   if (from === "en" && to === "es") {
@@ -24,21 +21,18 @@ async function traducir(texto, from, to) {
         quantized: true,
       });
     }
-    const out = await enToEs(texto);
-    return out[0].translation_text;
+    return (await enToEs(texto))[0].translation_text;
   }
 
   return null;
 }
 
 export default async function handler(req, res) {
-  // permitir preflight
   if (req.method === "OPTIONS") {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type, x-api-key");
-    res.status(200).end();
-    return;
+    return res.status(200).end();
   }
 
   if (req.method !== "POST") {
@@ -60,8 +54,8 @@ export default async function handler(req, res) {
     if (out === null) {
       return res.status(400).json({ error: "invalid_language_pair" });
     }
-    res.status(200).json({ traducido: out });
+    return res.status(200).json({ traducido: out });
   } catch (err) {
-    res.status(500).json({ error: "internal_error" });
+    return res.status(500).json({ error: "internal_error" });
   }
 }
