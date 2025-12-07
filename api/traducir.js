@@ -28,10 +28,12 @@ async function traducir(texto, from, to) {
 }
 
 export default async function handler(req, res) {
+  // CORS global
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, x-api-key");
+
   if (req.method === "OPTIONS") {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type, x-api-key");
     return res.status(200).end();
   }
 
