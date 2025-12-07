@@ -4,6 +4,9 @@ const API_KEY = "HomeroApp06-12-2025";
 let esToEn;
 let enToEs;
 
+const t = await pipeline("translation", "Xenova/opus-mt-es-en");
+console.log(await t("hola"));
+
 async function traducir(texto, from, to) {
   if (from === "es" && to === "en") {
     if (!esToEn) {
